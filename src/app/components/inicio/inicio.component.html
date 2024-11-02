@@ -1,0 +1,46 @@
+<app-navbar></app-navbar>
+<div class="login-container">
+    <h2>Inicio de Sesión</h2>
+  
+    <div>
+      <label for="username">Nombre de Usuario:</label>
+      <input type="text" id="username" [formControl]="usernameControl" placeholder="Usuario">
+      <div *ngIf="usernameControl.invalid && (usernameControl.dirty || usernameControl.touched)">
+        <small *ngIf="usernameControl.errors?.['required']">El nombre de usuario es obligatorio.</small>
+      </div>
+    </div>
+  
+    <div class="action-container">
+      <button class="login-button" (click)="login()">Verificar Usuario</button>
+    </div>
+  
+    <!-- Aquí agregas la visualización de la oración -->
+    <div *ngIf="oracion" class="oracion-container">
+      <p>Oración para validar: </p>
+      <br>
+      <p>{{ oracion }}</p>
+      
+      <!-- Botón Grabar aparecerá solo si hay una oración -->
+      <div class="button-container">
+        <button class="record-button small" (click)="startRecording()" title="Grabar">
+          <i class="fas fa-microphone"></i>
+        </button>
+        <button class="record-button" (click)="stopRecording()" [disabled]="!isRecording" title="Detener">
+          <i class="fas fa-stop"></i> <!-- Icono de detener -->
+        </button>
+      </div>
+  
+      <div *ngIf="audioUrl" class="audio-container">
+        <audio [src]="audioUrl" controls></audio>
+      </div>
+  
+      <div class="action-container">
+        <button class="login-button" (click)="validateVoice()" [disabled]="!audioBlob">Validar Voz</button>
+      </div>
+    </div>
+  
+    <p class="register-link">
+      ¿No tienes una cuenta? <a routerLink="/register">Registrarse</a>
+    </p>
+  </div>
+  

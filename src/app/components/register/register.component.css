@@ -1,0 +1,103 @@
+/* Archivo: src/app/register/register.component.css */
+
+.register-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 15px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 0 auto;
+}
+
+h2 {
+    font-size: 28px;  /* Aumentar tamaño de letra del título */
+    color: #333;
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 18px;  /* Aumentar tamaño de letra de las etiquetas */
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 18px;  /* Aumentar tamaño de letra del input */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.record-button {
+    padding: 10px;
+    background-color: #4CAF50; /* Color verde */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 50px; /* Tamaño más grande */
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;  /* Aumentar tamaño de letra del botón */
+}
+
+.record-button:hover {
+    background-color: #45a049; /* Cambia de color al pasar el mouse */
+}
+
+/* Estilo cuando el botón está deshabilitado */
+.record-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.register-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 15px;
+    font-size: 18px;  /* Aumentar tamaño de letra del botón de registro */
+}
+
+.register-button:hover {
+    background-color: #007bb5;
+}
+
+p {
+    margin-top: 20px;
+    font-size: 16px;  /* Aumentar tamaño de letra del párrafo */
+}
+
+a {
+    color: #008CBA;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;  /* Aumentar tamaño de letra del enlace */
+}
+
+a:hover {
+    text-decoration: underline;
+}
