@@ -7,12 +7,14 @@ import { RegisterComponent } from './components/register/register.component';
 import { Pagina404Component } from './components/pagina404/pagina404.component';
 import { AuthGuard } from 'src/app/auth/auth.guard';
 
+
 const routes: Routes = [
-  { path:'',redirectTo: '/inicio', pathMatch: 'full' },
-  { path:'inicio', component: InicioComponent },
-  { path:'register', component: RegisterComponent },
+  { path: '', redirectTo:'inicio', pathMatch: 'full' },
+  { path: 'inicio', component: InicioComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'application', component: VoiceRecordComponent, canActivate: [AuthGuard] },
-  { path:'**', component: Pagina404Component }
+  { path: 'pagina404', component: Pagina404Component },
+  { path: '**',  redirectTo: 'pagina404' }
 ];
 
 @NgModule({

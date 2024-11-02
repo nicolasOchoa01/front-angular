@@ -179,9 +179,11 @@ export class VoiceRecordComponent implements OnInit, OnDestroy {
           },
           error => {
             // manejo del error de autenticacion por problemas con el token //////////////////////////////
-            if(error === 403){
+            if(error.status === 403){
               localStorage.removeItem('authToken');
               console.error('error de autenticacion:', error.error.mensaje);
+              alert(error.error.mensaje + ': vuelva a loggearse');
+              window.location.reload();
             }
             this.snackBar.open('Error al enviar archivo de audio al servidor', 'Cerrar', {
               duration: 3000,
@@ -213,6 +215,12 @@ export class VoiceRecordComponent implements OnInit, OnDestroy {
           // Manejar la transcripcion como mostrarla en CKEditor (NO IMPLEMENTADO)
         },
         error => {
+          if(error.status === 403){
+            localStorage.removeItem('authToken');
+            console.error('error de autenticacion:', error.error.mensaje);
+            alert(error.error.mensaje + ': vuelva a loggearse');
+            window.location.reload();
+          }
           console.error('Error al transcribir el archivo:', error);
           this.isActionInProgress = false;
         }

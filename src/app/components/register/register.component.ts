@@ -59,6 +59,7 @@ export class RegisterComponent implements OnInit {
         {
           this.mensaje = response.mensaje; // Almacenarlo para mostrar en el HTML
           console.log(this.mensaje);
+          alert(this.mensaje);
           this.router.navigate(['/inicio']);
           
         } else {

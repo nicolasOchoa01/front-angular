@@ -148,7 +148,11 @@ export class AudioRecordingService {
 
   transcribeAudio(fileId: string): Observable<any> {
     const body = { file_id: fileId };
-    return this.httpClient.post<any>(environment.apiUrlBack + 'transcribe', body);
+
+    const token = localStorage.getItem('authToken');
+    const auth = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.httpClient.post<any>(environment.apiUrlBack + 'transcribe', body, { headers: auth });
   }
 
   abortRecording(){

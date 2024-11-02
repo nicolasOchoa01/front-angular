@@ -77,15 +77,15 @@ export class InicioComponent implements OnInit, OnDestroy {
         if (response.resultado) {
           this.message = response.mensaje;
           this.oracion = response.oracion; // Almacena la oración en la variable
-          alert("Oración para validar: " + this.oracion);
         } else {
           alert("No se pudo obtener la oración.");
         }
       },
       (error) => {
-        if(error === 400){
+        if(error.status === 400 && error.error && error.error.mensaje){
           this.message = error.error.mensaje;
           console.log(this.message);
+          alert(this.message);
         } else{
           this.message = 'Ocurrió un error al intentar iniciar sesión.';
           alert(this.message);
@@ -118,11 +118,12 @@ export class InicioComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        if(error === 400){
+        if(error.status === 400 && error.error && error.error.mensaje){
           this.oracion = error.error.oracion;
           this.message = error.error.mensaje;
           console.log(this.oracion);
           console.log(this.message);
+          alert(this.message);
         } else{
           console.error('Error al enviar el audio', error);
           this.message = 'Error en la autenticación. Intente de nuevo.';
