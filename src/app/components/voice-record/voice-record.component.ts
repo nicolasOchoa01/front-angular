@@ -35,6 +35,7 @@ export class VoiceRecordComponent implements OnInit, OnDestroy {
   private blinkStopper = new Subject<void>();
   private transcriptionText$ = new BehaviorSubject<string | null>(null);
   private quillInstance: any;
+  private textQuillIndex: number = 0;
 
   disableDeleted = true;
   disableDownload = true;
@@ -126,10 +127,10 @@ export class VoiceRecordComponent implements OnInit, OnDestroy {
 
   disableUploadTranscribeMethod(state: { uploadState: boolean; transcribeState: boolean; }) {
     if (state.uploadState == false) {
-      this.disableUploadTranscribe = true
+      this.disableUploadTranscribe = true 
     }
     if (state.transcribeState == false) {
-      this.disableUploadTranscribe = true
+      this.disableUploadTranscribe = true 
     }
     if (state.uploadState == true && state.transcribeState == true) {
       this.disableUploadTranscribe = false
@@ -301,12 +302,14 @@ export class VoiceRecordComponent implements OnInit, OnDestroy {
 
     // Buscar el primer parrafo vacio (<p></p>)
     const emptyParagraphIndex = this.findEmptyParagraphIndex(currentContents);
+    
 
     // Escuchar el Subject para obtener el texto transcrito y agregarlo al editor
     this.transcriptionText$.subscribe(transcriptionText => {
       if (transcriptionText) {
         // Si encontramos un parrafo vacio, insertar el texto alla
         if (emptyParagraphIndex >= 0) {
+          this.textQuillIndex = emptyParagraphIndex;
           this.quillInstance.insertText(emptyParagraphIndex, transcriptionText);
           // console.log('Texto agregado al primer parrafo vacio:', transcriptionText);
         } else {
@@ -467,13 +470,16 @@ export class VoiceRecordComponent implements OnInit, OnDestroy {
   }
 
   sendTranscribeToServer() {
-    if (this.transcribedSuccessfully && this.fileId) {
-      this.audioRecordingServices.sendTranscribeToServer(this.transcriptionText).subscribe(
+    if (this.transcribedSuccessfully && this.fileId) { 
+      const textoTranscriptoModificado = this.quillInstance.getText(this.textQuillIndex);
+      this.audioRecordingServices.sendTranscribeToServer(textoTranscriptoModificado).subscribe(
+        
         response =>{
           if (response && response.resultado){
-            // this.stateService.setButtonState({
-            //   transcribeState: true,
-            // });
+            this.stateService.setButtonState({
+              uploadState: false,
+            });
+            this.disableDownloadTranscribe = false;
             this.snackBar.open('La transcripcion de audio se ha enviado con exito al servidor!', 'Cerrar', {
               duration: 3000,
             });
@@ -496,6 +502,7 @@ export class VoiceRecordComponent implements OnInit, OnDestroy {
           this.snackBar.open('Error al transcribir el archivo', 'Cerrar', { duration: 3000 });
         }
       );
+      
     }
   }
 
