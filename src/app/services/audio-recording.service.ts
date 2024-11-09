@@ -3,6 +3,8 @@ import { Observable, Subject } from 'rxjs';
 import * as RecordRTC from 'recordrtc';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { jsPDF } from 'jspdf';
+
 
 
 export interface RecordedBlob{
@@ -27,8 +29,47 @@ export class AudioRecordingService {
     throw new Error('Method not implemented.');
   }
 
-  downloadTranscription(fileId: any) {
-    throw new Error('Method not implemented.');
+  downloadTranscription(informe: string) {
+    if (informe) {
+      const doc = new jsPDF();
+
+      // configuraciones de los margenes de la hoja
+      const pageWidth = doc.internal.pageSize.width;  
+      const margin = 20;                              
+      const maxLineWidth = 280;    
+      let yPosition = margin;                             
+
+      // Configuración del titulo
+      doc.setFontSize(18);
+      doc.setFont("helvetica", "bold");
+      doc.text("Informe de Audio Consultas Medicas", margin, yPosition);
+      yPosition += 8;  
+
+      // Línea separadora del titulo
+      doc.setLineWidth(0.5);
+      doc.line(margin, yPosition, pageWidth - margin, yPosition);
+      yPosition += 12;
+      
+      // Dividir el texto en líneas de acuerdo al ancho de la página
+      const textLines = doc.splitTextToSize(informe, maxLineWidth);
+
+      // configuracion de la fuente para el texto
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "normal");
+      
+      // Añadir el contenido al PDF, manejando saltos de página
+      for (const line of textLines) {
+        if (yPosition + 10 > doc.internal.pageSize.height - margin) {
+          doc.addPage();
+          yPosition = margin;  // Reiniciar la posición vertical en la nueva página
+        }
+        doc.text(line, margin, yPosition);
+        yPosition += 6;  // Incrementa la posición para la siguiente línea
+      }
+
+      // Descarga el archivo PDF
+      doc.save('informe.pdf');
+    }
   }
 
   private recorder: any;

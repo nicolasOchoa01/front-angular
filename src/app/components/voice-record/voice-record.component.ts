@@ -179,6 +179,7 @@ export class VoiceRecordComponent implements OnInit, OnDestroy {
   }
 
   startRecording() {
+    this.quillInstance.deleteText(this.textQuillIndex, Infinity);
     this.showUseFirstTimeMessageSubject.next(false);
     this.stateService.setButtonState({blobState: false})
     this.recordingButtonVisibilitySubject.next(false);
@@ -364,6 +365,7 @@ export class VoiceRecordComponent implements OnInit, OnDestroy {
               transcribeState: true,
               uploadState: true,
             });
+            this.disableTranscribe = true;
 
             this.snackBar.open('Transcripción completada con éxito!', 'Cerrar', { duration: 3000 });
 
@@ -459,7 +461,8 @@ export class VoiceRecordComponent implements OnInit, OnDestroy {
 
   downloadTranscription() {
     if (this.transcribedSuccessfully && this.fileId) {
-      this.audioRecordingServices.downloadTranscription(this.fileId);
+      const textoTranscriptoModificado = this.quillInstance.getText(this.textQuillIndex);
+      this.audioRecordingServices.downloadTranscription(textoTranscriptoModificado);
     }
   }
 
@@ -479,6 +482,7 @@ export class VoiceRecordComponent implements OnInit, OnDestroy {
             this.stateService.setButtonState({
               uploadState: false,
             });
+            this.disableUploadTranscribe = false;
             this.disableDownloadTranscribe = false;
             this.snackBar.open('La transcripcion de audio se ha enviado con exito al servidor!', 'Cerrar', {
               duration: 3000,
